@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { NgForm, NgModel, NgModelGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { UserService } from '../../shared/user.service'
 
@@ -9,16 +10,44 @@ import { UserService } from '../../shared/user.service'
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
+
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  phoneRegex = /^[0-9]{10}$/;
+  urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+
+  SignAs = [
+    'Influencer',
+    'Brand'
+  ];
+  Apps = [
+    'Facebook',
+    'Instagram'
+  ];
+
+  formStepsNum = 0;
+  formNumError = -1;
   showSucessMessage: boolean;
   serverErrorMessages: string;
 
-  constructor(private userService: UserService) { }
+
+  constructor(public userService: UserService) {
+
+  }
 
   ngOnInit() {
+    this.loadJsFile("assets/js/main.js");
+  }
+
+
+  public loadJsFile(url) {
+    let node = document.createElement('script');
+    node.src = url;
+    node.type = 'text/javascript';
   }
 
   onSubmit(form: NgForm) {
+    console.log('Inside onSubmit function');
+    console.log(form.name);
     this.userService.postUser(form.value).subscribe(
       res => {
         this.showSucessMessage = true;
@@ -37,12 +66,62 @@ export class SignUpComponent implements OnInit {
 
   resetForm(form: NgForm) {
     this.userService.selectedUser = {
-      fullName: '',
+      user_id: '',
+      category: '',
+      profile_url: '',
+      phone: '',
+      signUpAs: '',
+      followers: '',
+      socialMedia: '',
       email: '',
       password: ''
     };
-    form.resetForm();
+    this.formStepsNum = 0;
+    this.formNumError = -1;
+    // form.resetForm();
     this.serverErrorMessages = '';
+  }
+  onNextClick(form, num: number) {
+
+    console.log(form)
+
+    if (num == 1) {
+      if (form.name.email != '' && form.name.email.match(this.emailRegex) && form.name.password != '' && form.name.password.length > 3 && form.name.phone != '' && form.name.phone.match(this.phoneRegex) && form.name.signUpAs != '') {
+        console.log("yayy");
+        this.formStepsNum = num;
+        this.formNumError = -1;
+      }
+      else {
+        console.log("error");
+        this.formNumError = num - 1;
+      }
+    }
+    else if (num == 2) {
+      if (form.name.category != '') {
+        console.log("yayyyy");
+        this.formStepsNum = num;
+        this.formNumError = -1;
+      }
+      else {
+        this.formNumError = num - 1;
+      }
+    }
+    else {
+      if (form.name.profile_url != '' && form.name.profile_url.match(this.urlRegex) && form.name.user_id != '' && form.name.followers != '' && form.name.socialMedia != '') {
+        console.log("yayy123");
+        this.onSubmit(form);
+        this.formNumError = -1;
+      }
+      else {
+        console.log("error");
+        this.formNumError = num - 1;
+      }
+    }
+  }
+  onPrevClick(num: number) {
+    console.log(num);
+    this.formStepsNum = num;
+    this.formNumError = -1;
   }
 
 }

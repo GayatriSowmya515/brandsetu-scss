@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <img src="assets/img/single_user.png" id="icon" alt="User Icon" />
   </div>
   <form #signInForm="ngForm" (ngSubmit)="signInForm.valid && onSubmit(signInForm)">
@@ -14,7 +14,34 @@
     </div>
     <input type="submit" value="Sign In">
   </form>
-  <!-- Error message -->
-<div class="alert" *ngIf="serverErrorMessages">
+  Error message -->
+<!-- <div class="alert" *ngIf="serverErrorMessages">
     {{serverErrorMessages}}
-  </div>
+  </div> -->
+
+<div class="login">
+  <form class="login-box" #signInForm="ngForm" (ngSubmit)="signInForm.valid && onSubmit(signInForm)">
+    <div class="login-box-pic">
+    </div>
+    <input class="login-box-username input" type="text" name="email" #email="ngModel" [(ngModel)]="model.email"
+      placeholder="Email" [pattern]="emailRegex" required
+      [ngClass]="{'invalid-textbox' :signInForm.submitted && !email.valid }">
+    <div *ngIf="signInForm.submitted && email.errors?.pattern">
+      <label class="validation-message">Invalid email address.</label>
+    </div>
+    <input class="login-box-password input" type="password" name="password" #password="ngModel"
+      [(ngModel)]="model.password" placeholder="Password" required minlength="4"
+      [ngClass]="{'invalid-textbox' :signInForm.submitted && !password.valid }">
+    <div *ngIf="signInForm.submitted && password.errors?.minlength">
+      <label class="validation-message">Minimum 4 characters.</label>
+    </div>
+    <input matRipple [matRippleColor]="'white'" class="login-btn" type="submit" value="Sign In">
+    <!-- <input class="login-box-username input" type="text" placeholder="Username">
+    <input class="login-box-password input" type="password" name="" id="" placeholder="Password">
+    <button anim="ripple" class="login-btn">Login</button> -->
+    <div class="login-box-other">
+      <a class="login-box-other-rme" href="#">Remember Me</a>
+      <a class="login-box-other-fpass" href="##">Forgot Password</a>
+    </div>
+  </form>
+</div>

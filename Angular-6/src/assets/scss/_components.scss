@@ -1,0 +1,165 @@
+.login-btn{
+    width: 100%;
+    padding: 1rem 2rem;
+    margin: 0.2rem;
+    border: 0;
+    outline: 0;
+    color: white;
+    background-color: var(--color-primary-1);
+    text-transform: uppercase;
+    border-radius: 2rem;
+    box-shadow: 0 0 0.8rem rgba(0, 0, 0, 0.3 );
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+  [anim="ripple"] {
+    
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+        content: '';
+        position:absolute;
+        display: block;
+        background: var(--ripple-background, white);      
+        border-radius: 50%;
+        pointer-events: none; 
+        
+        //  position and size 
+        top: calc(var(--y) * 1px);
+        left: calc(var(--x) * 1px);
+        width:  calc(var(--d) * 1px);
+        height: calc(var(--d) * 1px);
+
+        //  animated properties
+        opacity: calc(var(--o, 1) * var(--ripple-opacity, 0.3));                
+        transition: calc(var(--t, 0) * var(--ripple-duration, 600ms)) var(--ripple-easing,linear);   
+        transform: translate(-50%, -50%) scale(var(--s, 1));
+        transform-origin: center;
+    }
+}
+
+
+
+.input{
+    width: 100%;
+    height: 4rem;
+    padding-left: 2rem;
+    border: none;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+
+
+
+
+
+
+/**************************PROGRESS BAR*************************************/
+
+.progressbar {
+    position: relative;
+    display: flex;
+    grid-row: 2/3;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%); 
+    justify-content: space-between;
+    counter-reset: step;
+    margin: 2rem 0 4rem;
+    width: 50rem;
+}
+
+.progressbar::before,
+.progress {
+    content: "";
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background-color: #fffdfdd2;
+    z-index: 1;
+    margin-top:1rem;
+}
+
+.progress {
+    background-color: var(--color-primary-1);
+    width: 0%;
+    transition: 0.8s;
+}
+
+.progress-step {
+    width: 3rem;
+    height: 3rem;
+    font-weight: 400;
+    font-size: 1.6rem;
+    background-color: #fffdfdd2;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.progress-step::before {
+    counter-increment: step;
+    content: counter(step);
+}
+
+.progress-step::after {
+    content: attr(data-title);
+    position: absolute;
+    top: calc(30% + 0.5rem);
+    font-weight: 400;
+    font-size: 1.6rem;
+    color: #fffdfdd2;
+}
+
+.progress-step-active {
+    background-color: var(--color-primary-1);
+    color: #fffdfdd2;
+}
+
+.step-forms {
+    display: none;
+    transform-origin: top;
+    animation: animate 1s
+}
+
+.step-forms-active {
+    display: block;
+}
+
+@keyframes animate {
+    from {
+        /* transform: scale(1, 0); */
+        opacity: 0
+    }
+
+    to {
+        /* transform: scale(1, 1); */
+        opacity: 1
+    }
+}
+
+.progress-step-check {
+    /* position: relative; */
+    color:#fffdfdd2 !important;
+    background-color: var(--color-primary-1) !important;
+    transition: all 1s
+}
+
+.progress-step-check::before {
+    /* position: absolute; */
+    content: '\2713';
+    font-weight: 800;
+    /* width: 100%;
+    height: 100%; */
+    /* top: 8px;
+    left: 13px;
+    font-size: 12px */
+}

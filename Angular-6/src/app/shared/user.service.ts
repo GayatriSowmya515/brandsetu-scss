@@ -9,7 +9,13 @@ import { User } from './user.model';
 })
 export class UserService {
   selectedUser: User = {
-    fullName: '',
+    user_id: '',
+    category: '',
+    profile_url: '',
+    phone: '',
+    signUpAs: '',
+    followers: '',
+    socialMedia: '',
     email: '',
     password: ''
   };
@@ -35,21 +41,21 @@ export class UserService {
 
   //Helper Methods
 
-  setToken(token: string) {
+  setToken(token: string) { //token is the response from the server after login 
     localStorage.setItem('token', token);
   }
 
-  getToken() {
+  getToken() { //get the token from the local storage
     return localStorage.getItem('token');
   }
 
-  deleteToken() {
+  deleteToken() { //delete the token from the local storage
     localStorage.removeItem('token');
   }
 
-  getUserPayload() {
-    var token = this.getToken();
-    if (token) {
+  getUserPayload() { //get the user payload from the token
+    var token = this.getToken(); //get the token from the local storage
+    if (token) { //if token is not null
       var userPayload = atob(token.split('.')[1]);
       return JSON.parse(userPayload);
     }
@@ -57,11 +63,11 @@ export class UserService {
       return null;
   }
 
-  isLoggedIn() {
-    var userPayload = this.getUserPayload();
-    if (userPayload)
-      return userPayload.exp > Date.now() / 1000;
-    else
+  isLoggedIn() { //check if the user is logged in
+    var userPayload = this.getUserPayload(); //get the user payload from the token
+    if (userPayload) //if user payload is not null
+      return userPayload.exp > Date.now() / 1000; //check if the token is expired
+    else //if user payload is null
       return false;
   }
 }

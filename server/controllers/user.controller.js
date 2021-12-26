@@ -4,11 +4,17 @@ const _ = require('lodash');
 
 const User = mongoose.model('User');
 
-module.exports.register = (req, res, next) => {
+module.exports.register = (req, res, next) => { // register new user
     var user = new User();
-    user.fullName = req.body.fullName;
+    user.phone = req.body.phone;
     user.email = req.body.email;
     user.password = req.body.password;
+    user.signUpAs = req.body.signUpAs;
+    user.category = req.body.category;
+    user.user_id = req.body.user_id;
+    user.profile_url = req.body.profile_url;
+    user.followers = req.body.followers;
+    user.socialMedia = req.body.socialMedia;
     user.save((err, doc) => {
         if (!err)
             res.send(doc);
@@ -24,7 +30,7 @@ module.exports.register = (req, res, next) => {
 
 module.exports.authenticate = (req, res, next) => {
     // call for passport authentication
-    passport.authenticate('local', (err, user, info) => {       
+    passport.authenticate('local', (err, user, info) => {
         // error from passport middleware
         if (err) return res.status(400).json(err);
         // registered user
@@ -34,13 +40,13 @@ module.exports.authenticate = (req, res, next) => {
     })(req, res);
 }
 
-module.exports.userProfile = (req, res, next) =>{
-    User.findOne({ _id: req._id },
+module.exports.userProfile = (req, res, next) => {
+    User.findOne({ _id: req._id }, // find user by id
         (err, user) => {
             if (!user)
                 return res.status(404).json({ status: false, message: 'User record not found.' });
             else
-                return res.status(200).json({ status: true, user : _.pick(user,['fullName','email']) });
+                return res.status(200).json({ status: true, user: _.pick(user, ['user_id', 'email', 'socialMedia', 'profile_url']) });
         }
     );
 }

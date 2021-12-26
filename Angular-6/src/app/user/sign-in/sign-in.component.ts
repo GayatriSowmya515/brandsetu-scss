@@ -2,13 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 
+
 import { UserService } from '../../shared/user.service';
+declare function ripple(): any;
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
+
+
+
 export class SignInComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router) { }
@@ -22,6 +27,7 @@ export class SignInComponent implements OnInit {
   ngOnInit() {
     if (this.userService.isLoggedIn())
       this.router.navigateByUrl('/userprofile');
+    ripple();
   }
 
   onSubmit(form: NgForm) {
@@ -34,6 +40,7 @@ export class SignInComponent implements OnInit {
         this.serverErrorMessages = err.error.message;
       }
     );
+
   }
 
 }

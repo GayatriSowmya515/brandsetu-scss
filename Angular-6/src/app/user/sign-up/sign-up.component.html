@@ -1,27 +1,3 @@
-<div>
-  <img src="/assets/img/users.png" id="icon" alt="User Icon" />
-</div>
-<form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)">
-  <input type="text" #fullName="ngModel" [(ngModel)]="userService.selectedUser.fullName" name="fullName" placeholder="Full Name"
-  required  [ngClass]="{'invalid-textbox' :signUpForm.submitted && !fullName.valid }">
-  <div *ngIf="signUpForm.submitted && !fullName.valid">
-    <label class="validation-message">This field is required.</label>
-  </div>
-  <input type="text" #email="ngModel" [(ngModel)]="userService.selectedUser.email" name="email" placeholder="Email"
-  required [pattern]="emailRegex"  [ngClass]="{'invalid-textbox' :signUpForm.submitted && !email.valid }">
-  <div *ngIf="signUpForm.submitted && email.errors">
-    <label *ngIf="email.errors.required" class="validation-message">This field is required.</label>
-    <label *ngIf="email.errors.pattern" class="validation-message">Invalid email address.</label>
-  </div>
-  <input type="password" #password="ngModel" [(ngModel)]="userService.selectedUser.password" name="password" placeholder="Password"
-  minlength="4" required [ngClass]="{'invalid-textbox' :signUpForm.submitted && !password.valid }">
-  <div *ngIf="signUpForm.submitted && password.errors">
-    <label *ngIf="password.errors.required" class="validation-message">This field is required.</label>
-    <label *ngIf="password.errors.minlength" class="validation-message">Enter atleast 4 characters.</label>
-  </div>
-  <input type="submit" value="Sign Up">
-</form>
-
 <!-- Success message -->
 <div class="success" *ngIf="showSucessMessage">
   Saved successfully
@@ -30,4 +6,149 @@
 <!-- Error message -->
 <div class="alert" *ngIf="serverErrorMessages">
   {{serverErrorMessages}}
+</div>
+
+
+<div class="signup">
+  <div class="signup-space">
+
+  </div>
+  <!-- progressbar -->
+  <div class="progressbar">
+    <div class="progress" id="progress" [ngStyle]="{'width' : (formStepsNum/2)*100+'%'}"></div>
+    <div class="progress-step progress-step-active"
+      [ngClass]="{'progress-step-active' :formStepsNum === 0 ,'progress-step-check':formStepsNum >=1 }"
+      data-title="Account"></div>
+    <div class="progress-step"
+      [ngClass]="{'progress-step-active' :formStepsNum === 1,'progress-step-check':formStepsNum >=2 }"
+      data-title="Social"></div>
+    <div class="progress-step"
+      [ngClass]="{'progress-step-active' :formStepsNum === 2, 'progress-step-check':formStepsNum >=3 }"
+      data-title="Personal"></div>
+  </div>
+
+
+  <!-- multistep form -->
+  <form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)" class="signup-box">
+
+
+    <!-- fieldsets -->
+    <fieldset #signUpForm1="ngModelGroup" [(ngModelGroup)]="userService.selectedUser"
+      class="signup-box-1 step-forms step-forms-active" [ngClass]="{'step-forms-active' :formStepsNum === 0 }">
+      <h2 class="signup-box-1-title">CREATE YOUR ACCOUNT</h2>
+      <h3 class="fs-subtitle"></h3>
+      <div class="signup-box-1-d">
+        <div class="signup-box-1-d-input field">
+          <input autocomplete="off" class="input" type="text" #email="ngModel"
+            [(ngModel)]="userService.selectedUser.email" name="email" placeholder="Email" required
+            [pattern]="emailRegex" [ngClass]="{'invalid-textbox' :formNumError==0 && !email.valid }">
+          <div *ngIf="formNumError==0 && email.errors">
+            <label *ngIf="email.errors.required" class="validation-message">This field is required.</label>
+            <label *ngIf="email.errors.pattern" class="validation-message">Invalid email address.</label>
+          </div>
+          <input autocomplete="off" class="input" type="text" #phone="ngModel"
+            [(ngModel)]="userService.selectedUser.phone" name="phone" placeholder="Phone Number" [pattern]="phoneRegex"
+            required [ngClass]="{'invalid-textbox' :formNumError==0 && !phone.valid }">
+          <div *ngIf="formNumError==0 && phone.errors">
+            <label *ngIf="phone.errors.required" class="validation-message">This field is required.</label>
+            <label *ngIf="phone.errors.pattern" class="validation-message">Invalid Phone Number.</label>
+          </div>
+          <input autocomplete="off" class="input" type="password" #password="ngModel"
+            [(ngModel)]="userService.selectedUser.password" name="password" placeholder="Password" minlength="4"
+            required [ngClass]="{'invalid-textbox' :formNumError==0 && !password.valid }">
+          <div *ngIf="formNumError==0 && password.errors">
+            <label *ngIf="password.errors.required" class="validation-message">This field is required.</label>
+            <label *ngIf="password.errors.minlength" class="validation-message">Enter atleast 4 characters.</label>
+          </div>
+
+        </div>
+        <div class="signup-box-1-d-dropdown">
+          <select #signUpAs="ngModel" [(ngModel)]="userService.selectedUser.signUpAs" class="input" id="drop-1"
+            placeholder="Sign up as" name="signUpAs" required
+            [ngClass]="{'invalid-textbox' :formNumError==0 && !signUpAs.valid }">
+            <option value="Influencer">Influencer</option>
+            <option value="Brand">Brand</option>
+          </select>
+          <div *ngIf="formNumError==0 && signUpAs.errors">
+            <label *ngIf="signUpAs.errors.required" class="validation-message">This field is required.</label>
+          </div>
+
+        </div>
+      </div>
+      <div class="signup-box-1-btn">
+        <button type="button" anim="ripple" (click)="onNextClick(signUpForm1,1)"
+          class="login-btn signup-btn btn-next">Next</button>
+      </div>
+
+
+    </fieldset>
+
+    <fieldset #signUpForm2="ngModelGroup" [(ngModelGroup)]="userService.selectedUser" class="signup-box-2 step-forms"
+      [ngClass]="{'step-forms-active' :formStepsNum === 1 }">
+      <h2 class="signup-box-2-title">SELECT YOUR CATEGORY</h2>
+
+      <div class="signup-box-2-d">
+        <div class="signup-box-2-d-input">
+          <input autocomplete="off" class="input" type="text" #category="ngModel"
+            [(ngModel)]="userService.selectedUser.category" name="category" placeholder="Category" required
+            [ngClass]="{'invalid-textbox' :formNumError==1 && !category.valid }">
+          <div *ngIf="formNumError==1 && category.errors">
+            <label *ngIf="category.errors.required" class="validation-message">This field is required.</label>
+          </div>
+        </div>
+      </div>
+      <div class="signup-box-2-btn">
+        <button (click)="onPrevClick(0)" type="button" anim="ripple"
+          class="signup-box-2-btn-1 login-btn signup-btn btn-prev">Previous</button>
+        <button (click)="onNextClick(signUpForm2,2)" type="button" anim="ripple"
+          class="signup-box-2-btn-2 login-btn signup-btn btn-next">Next</button>
+      </div>
+
+    </fieldset>
+    <fieldset #signUpForm3="ngModelGroup" [(ngModelGroup)]="userService.selectedUser" class="signup-box-3 step-forms"
+      [ngClass]="{'step-forms-active' :formStepsNum === 2 }">
+      <h2 class="signup-box-3-title">ENTER SOCIAL PROFILE DETAILS</h2>
+
+      <div class="signup-box-3-d">
+        <div class="signup-box-3-d-input">
+          <input autocomplete="off" class="input" type="text" #user_id="ngModel"
+            [(ngModel)]="userService.selectedUser.user_id" name="user_id" placeholder="Enter User Id" required
+            [ngClass]="{'invalid-textbox' :formNumError == 2 && !user_id.valid }">
+          <div *ngIf="formNumError==2  && user_id.errors">
+            <label *ngIf="user_id.errors.required" class="validation-message">This field is required.</label>
+          </div>
+          <input autocomplete="off" class="input" type="text" #profile_url="ngModel"
+            [(ngModel)]="userService.selectedUser.profile_url" name="profile_url" placeholder="Profile URL" required
+            [ngClass]="{'invalid-textbox' :formNumError == 2 && !profile_url.valid }" [pattern]="phoneRegex">
+          <div *ngIf="formNumError==2  && profile_url.errors">
+            <label *ngIf="profile_url.errors.required" class="validation-message">This field is required.</label>
+          </div>
+
+          <input autocomplete="off" class="input" type="text" #followers="ngModel"
+            [(ngModel)]="userService.selectedUser.followers" name="followers" placeholder="Subcribers/Followers"
+            required [ngClass]="{'invalid-textbox' :formNumError == 2 && !followers.valid }">
+
+        </div>
+        <div class="signup-box-3-d-dropdown">
+          <select #socialMedia="ngModel" [(ngModel)]="userService.selectedUser.socialMedia" class="input" id="drop-1"
+            placeholder="Social Media" required name="socialMedia"
+            [ngClass]="{'invalid-textbox' :formNumError == 2 && !socialMedia.valid }">
+            <option value="Facebook">Facebook</option>
+            <option value="Instagram">Instagram</option>
+          </select>
+          <div *ngIf="formNumError == 2 && socialMedia.errors">
+            <label *ngIf="socialMedia.errors.required" class="validation-message">This field is required.</label>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="signup-box-3-btn">
+        <button (click)="onPrevClick(1)" type="button" anim="ripple"
+          class="login-btn signup-box-3-btn-1 signup-btn btn-prev">Previous</button>
+        <input type="submit" (click)="onNextClick(signUpForm3,3)" id="submit-form"
+          class="login-btn signup-box-3-btn-2 signup-btn" value="Sign Up">
+      </div>
+    </fieldset>
+  </form>
 </div>

@@ -3,19 +3,42 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 var userSchema = new mongoose.Schema({
-    fullName: {
-        type: String,
-        required: 'Full name can\'t be empty'
-    },
     email: {
         type: String,
         required: 'Email can\'t be empty',
         unique: true
     },
+    phone: {
+        type: String,
+        required: 'Phone number can\'t be empty'
+    },
     password: {
         type: String,
         required: 'Password can\'t be empty',
         minlength: [4, 'Password must be atleast 4 character long']
+    },
+    signUpAs: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: 'Select any category'
+    },
+    user_id: {
+        type: String,
+        required: 'User Id can\'t be empty'
+    },
+    profile_url: {
+        type: String,
+        required: 'Profile URL can\'t be empty'
+    },
+    followers: {
+        type: String,
+    },
+    socialMedia: {
+        type: String,
+        required: true
     },
     saltSecret: String
 });
@@ -26,8 +49,20 @@ userSchema.path('email').validate((val) => {
     return emailRegex.test(val);
 }, 'Invalid e-mail.');
 
-// Events
-userSchema.pre('save', function (next) {
+// Custom validation for phone
+userSchema.path('phone').validate((val) => {
+    phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(val);
+}, 'Invalid phone number.');
+
+// Custom validation for profile url
+userSchema.path('profile_url').validate((val) => {
+    profileRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    return profileRegex.test(val);
+}, 'Invalid profile URL.');
+
+// Events 
+userSchema.pre('save', function (next) { // Hash password before saving to database
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(this.password, salt, (err, hash) => {
             this.password = hash;
@@ -39,18 +74,18 @@ userSchema.pre('save', function (next) {
 
 
 // Methods
-userSchema.methods.verifyPassword = function (password) {
+userSchema.methods.verifyPassword = function (password) { // Check if password is correct
     return bcrypt.compareSync(password, this.password);
 };
 
-userSchema.methods.generateJwt = function () {
-    return jwt.sign({ _id: this._id},
+userSchema.methods.generateJwt = function () { // Generate Token
+    return jwt.sign({ _id: this._id },
         process.env.JWT_SECRET,
-    {
-        expiresIn: process.env.JWT_EXP
-    });
+        {
+            expiresIn: process.env.JWT_EXP // Token expires in 1 hour
+        });
 }
 
 
 
-mongoose.model('User', userSchema);
+mongoose.model('User', userSchema); 

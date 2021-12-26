@@ -1,5 +1,11 @@
 export class User {
-    fullName: string;
-    email: string; 
+    user_id: string;
+    category: string;
+    profile_url: string;
+    phone: string;
+    signUpAs: string;
+    followers: string;
+    socialMedia: string;
+    email: string;
     password: string;
 }
