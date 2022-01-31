@@ -24,6 +24,8 @@ export class SignUpComponent implements OnInit {
     'Instagram'
   ];
 
+  formAccountNumber = -1;
+  formAddAccount = 0;
   formStepsNum = 0;
   formNumError = -1;
   showSucessMessage: boolean;
@@ -48,6 +50,8 @@ export class SignUpComponent implements OnInit {
   onSubmit(form: NgForm) {
     console.log('Inside onSubmit function');
     console.log(form.name);
+    form.value.social_media_handles = this.userService.selectedUser.social_media_handles;
+    console.log(form.value);
     this.userService.postUser(form.value).subscribe(
       res => {
         this.showSucessMessage = true;
@@ -66,16 +70,19 @@ export class SignUpComponent implements OnInit {
 
   resetForm(form: NgForm) {
     this.userService.selectedUser = {
-      user_id: '',
       category: '',
-      profile_url: '',
       phone: '',
       signUpAs: '',
-      followers: '',
-      socialMedia: '',
       email: '',
-      password: ''
+      password: '',
+      social_media_handles: []
     };
+    // this.userService.social_media_handle = {
+    //   socialMedia: '',
+    //   user_id: '',
+    //   followers: -1,
+    //   profile_url: ''
+    // };
     this.formStepsNum = 0;
     this.formNumError = -1;
     // form.resetForm();
@@ -107,21 +114,53 @@ export class SignUpComponent implements OnInit {
       }
     }
     else {
-      if (form.name.profile_url != '' && form.name.profile_url.match(this.urlRegex) && form.name.user_id != '' && form.name.followers != '' && form.name.socialMedia != '') {
-        console.log("yayy123");
-        this.onSubmit(form);
-        this.formNumError = -1;
-      }
-      else {
-        console.log("error");
-        this.formNumError = num - 1;
-      }
+      console.log(form);
+      console.log(form.value);
+      console.log(form.name);
+      this.onSubmit(form);
+      // if (form.name.profile_url != '' && form.name.profile_url.match(this.urlRegex) && form.name.user_id != '' && form.name.followers != '' && form.name.socialMedia != '') {
+      //   console.log("yayy123");
+
+      //   this.formNumError = -1;
+      // }
+      // else {
+      //   console.log("error");
+      //   this.formNumError = num - 1;
+      // }
     }
   }
   onPrevClick(num: number) {
     console.log(num);
     this.formStepsNum = num;
     this.formNumError = -1;
+  }
+
+  onAddAccountClick() {
+    this.formAddAccount++;
+    this.formAccountNumber++;
+  }
+
+  onAddClick(form, num: number) {
+    console.log(form.user_id);
+    console.log(form.profile_url);
+    console.log(this.userService.selectedUser.social_media_handles);
+    if (form.profile_url != undefined && form.profile_url.match(this.urlRegex) && form.user_id != undefined && form.followers != undefined && form.socialMedia != undefined) {
+      this.formAddAccount--;
+      this.formNumError = -1;
+      this.userService.selectedUser.social_media_handles.push({
+        profile_url: form.profile_url,
+        user_id: form.user_id,
+        followers: form.followers,
+        socialMedia: form.socialMedia
+      });
+      console.log(this.userService.selectedUser.social_media_handles);
+    }
+    else {
+      console.log("error");
+      this.formNumError = num - 1;
+    }
+
+
   }
 
 }

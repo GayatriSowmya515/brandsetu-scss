@@ -7,7 +7,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 
+//requiring routes
 const rtsIndex = require('./routes/index.router');
+const brandController = require("./controllers/brand.controller.js");
+
+// mongoose models
+const { mongoose } = require('./models/db.js')
 
 var app = express();
 
@@ -17,6 +22,10 @@ app.use(cors());
 app.use(passport.initialize());
 app.use('/api', rtsIndex);
 
+
+// routes
+app.use('/brand', brandController)
+
 // error handler
 app.use((err, req, res, next) => {
     if (err.name === 'ValidationError') {
@@ -24,7 +33,7 @@ app.use((err, req, res, next) => {
         Object.keys(err.errors).forEach(key => valErrors.push(err.errors[key].message));
         res.status(422).send(valErrors)
     }
-    else{
+    else {
         console.log(err);
     }
 });

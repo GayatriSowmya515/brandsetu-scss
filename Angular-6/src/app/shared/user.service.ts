@@ -3,22 +3,26 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { User } from './user.model';
+import { social_media_handle } from './social_media_handles.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   selectedUser: User = {
-    user_id: '',
     category: '',
-    profile_url: '',
     phone: '',
     signUpAs: '',
-    followers: '',
-    socialMedia: '',
     email: '',
-    password: ''
+    password: '',
+    social_media_handles: []
   };
+  // social_media_handle: social_media_handle = {
+  //   profile_url: '',
+  //   user_id: '',
+  //   followers: -1,
+  //   socialMedia: ''
+  // }
 
   noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 

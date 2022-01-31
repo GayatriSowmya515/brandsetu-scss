@@ -42,34 +42,34 @@
           <input autocomplete="off" class="input" type="text" #email="ngModel"
             [(ngModel)]="userService.selectedUser.email" name="email" placeholder="Email" required
             [pattern]="emailRegex" [ngClass]="{'invalid-textbox' :formNumError==0 && !email.valid }">
-          <div *ngIf="formNumError==0 && email.errors">
+          <div class="validation-box" *ngIf="formNumError==0 && email.errors">
             <label *ngIf="email.errors.required" class="validation-message">This field is required.</label>
             <label *ngIf="email.errors.pattern" class="validation-message">Invalid email address.</label>
           </div>
           <input autocomplete="off" class="input" type="text" #phone="ngModel"
             [(ngModel)]="userService.selectedUser.phone" name="phone" placeholder="Phone Number" [pattern]="phoneRegex"
             required [ngClass]="{'invalid-textbox' :formNumError==0 && !phone.valid }">
-          <div *ngIf="formNumError==0 && phone.errors">
+          <div class="validation-box" *ngIf="formNumError==0 && phone.errors">
             <label *ngIf="phone.errors.required" class="validation-message">This field is required.</label>
             <label *ngIf="phone.errors.pattern" class="validation-message">Invalid Phone Number.</label>
           </div>
           <input autocomplete="off" class="input" type="password" #password="ngModel"
             [(ngModel)]="userService.selectedUser.password" name="password" placeholder="Password" minlength="4"
             required [ngClass]="{'invalid-textbox' :formNumError==0 && !password.valid }">
-          <div *ngIf="formNumError==0 && password.errors">
+          <div class="validation-box" *ngIf="formNumError==0 && password.errors">
             <label *ngIf="password.errors.required" class="validation-message">This field is required.</label>
             <label *ngIf="password.errors.minlength" class="validation-message">Enter atleast 4 characters.</label>
           </div>
 
         </div>
         <div class="signup-box-1-d-dropdown">
-          <select #signUpAs="ngModel" [(ngModel)]="userService.selectedUser.signUpAs" class="input" id="drop-1"
+          <select #signUpAs="ngModel" [(ngModel)]="userService.selectedUser.signUpAs" class="selectpicker" id="drop-1"
             placeholder="Sign up as" name="signUpAs" required
             [ngClass]="{'invalid-textbox' :formNumError==0 && !signUpAs.valid }">
             <option value="Influencer">Influencer</option>
             <option value="Brand">Brand</option>
           </select>
-          <div *ngIf="formNumError==0 && signUpAs.errors">
+          <div class="validation-box" *ngIf="formNumError==0 && signUpAs.errors">
             <label *ngIf="signUpAs.errors.required" class="validation-message">This field is required.</label>
           </div>
 
@@ -86,13 +86,29 @@
     <fieldset #signUpForm2="ngModelGroup" [(ngModelGroup)]="userService.selectedUser" class="signup-box-2 step-forms"
       [ngClass]="{'step-forms-active' :formStepsNum === 1 }">
       <h2 class="signup-box-2-title">SELECT YOUR CATEGORY</h2>
-
       <div class="signup-box-2-d">
         <div class="signup-box-2-d-input">
-          <input autocomplete="off" class="input" type="text" #category="ngModel"
-            [(ngModel)]="userService.selectedUser.category" name="category" placeholder="Category" required
+          <select #category="ngModel" [(ngModel)]="userService.selectedUser.category" class="selectpicker"
+            placeholder="Category" name="category" required
             [ngClass]="{'invalid-textbox' :formNumError==1 && !category.valid }">
-          <div *ngIf="formNumError==1 && category.errors">
+            <option value="Entertainment">Entertainment</option>
+            <option value="Education">Education</option>
+            <option value="Finance">Finance</option>
+            <option value="Beauty and Personal care">Beauty and Personal care</option>
+            <option value="Health and Wellness">Health and Wellness</option>
+            <option value="News and Media">News and Media</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Fitness and Sports">Fitness and Sports</option>
+            <option value="Science, Technology and Engineering">Science, Technology and Engineering</option>
+            <option value="Design and Architecture">Design and Architecture</option>
+            <option value="Food">Food</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <!-- <input autocomplete="off" class="input" type="text" #category="ngModel"
+            [(ngModel)]="userService.selectedUser.category" name="category" placeholder="Category" required
+            [ngClass]="{'invalid-textbox' :formNumError==1 && !category.valid }"> -->
+          <div class="validation-box" *ngIf="formNumError==1 && category.errors">
             <label *ngIf="category.errors.required" class="validation-message">This field is required.</label>
           </div>
         </div>
@@ -108,37 +124,47 @@
     <fieldset #signUpForm3="ngModelGroup" [(ngModelGroup)]="userService.selectedUser" class="signup-box-3 step-forms"
       [ngClass]="{'step-forms-active' :formStepsNum === 2 }">
       <h2 class="signup-box-3-title">ENTER SOCIAL PROFILE DETAILS</h2>
-
-      <div class="signup-box-3-d">
+      <div class="signup-box-3-add-account-btn">
+        <button type="button" (click)="onAddAccountClick()" class="login-btn signup-btn btn-add-account">Add
+          Account</button>
+      </div>
+      <div #social_media_handle="ngModelGroup" [(ngModelGroup)]="userService.selectedUser.social_media_handles"
+        *ngIf="formAddAccount > 0" class="signup-box-3-d">
         <div class="signup-box-3-d-input">
           <input autocomplete="off" class="input" type="text" #user_id="ngModel"
-            [(ngModel)]="userService.selectedUser.user_id" name="user_id" placeholder="Enter User Id" required
+            [(ngModel)]="social_media_handle.user_id" name="user_id" placeholder="Enter User Id" required
             [ngClass]="{'invalid-textbox' :formNumError == 2 && !user_id.valid }">
-          <div *ngIf="formNumError==2  && user_id.errors">
+          <div class="validation-box" *ngIf="formNumError==2  && user_id.errors">
             <label *ngIf="user_id.errors.required" class="validation-message">This field is required.</label>
           </div>
           <input autocomplete="off" class="input" type="text" #profile_url="ngModel"
-            [(ngModel)]="userService.selectedUser.profile_url" name="profile_url" placeholder="Profile URL" required
+            [(ngModel)]="social_media_handle.profile_url" name="profile_url" placeholder="Profile URL" required
             [ngClass]="{'invalid-textbox' :formNumError == 2 && !profile_url.valid }" [pattern]="phoneRegex">
-          <div *ngIf="formNumError==2  && profile_url.errors">
+          <div class="validation-box" *ngIf="formNumError==2  && profile_url.errors">
             <label *ngIf="profile_url.errors.required" class="validation-message">This field is required.</label>
           </div>
 
           <input autocomplete="off" class="input" type="text" #followers="ngModel"
-            [(ngModel)]="userService.selectedUser.followers" name="followers" placeholder="Subcribers/Followers"
-            required [ngClass]="{'invalid-textbox' :formNumError == 2 && !followers.valid }">
+            [(ngModel)]="social_media_handle.followers" name="followers" placeholder="Subcribers/Followers" required
+            [ngClass]="{'invalid-textbox' :formNumError == 2 && !followers.valid }">
 
         </div>
         <div class="signup-box-3-d-dropdown">
-          <select #socialMedia="ngModel" [(ngModel)]="userService.selectedUser.socialMedia" class="input" id="drop-1"
+          <select #socialMedia="ngModel" [(ngModel)]="social_media_handle.socialMedia" class="input" id="drop-1"
             placeholder="Social Media" required name="socialMedia"
             [ngClass]="{'invalid-textbox' :formNumError == 2 && !socialMedia.valid }">
-            <option value="Facebook">Facebook</option>
+            <option value="Youtube">Youtube</option>
             <option value="Instagram">Instagram</option>
+            <option value="Snapchart">Snapchart</option>
+            <option value="Tiktok">Tiktok</option>
           </select>
-          <div *ngIf="formNumError == 2 && socialMedia.errors">
+          <div class="validation-box" *ngIf="formNumError == 2 && socialMedia.errors">
             <label *ngIf="socialMedia.errors.required" class="validation-message">This field is required.</label>
           </div>
+        </div>
+        <div class="signup-box-3-d-btn-add">
+          <button (click)="onAddClick(social_media_handle,3)" type="button" anim="ripple"
+            class="signup-box-3-d-btn-add-1 login-btn">Add</button>
         </div>
       </div>
 

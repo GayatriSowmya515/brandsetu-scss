@@ -1,11 +1,9 @@
+import { social_media_handle } from './social_media_handles.model';
 export class User {
-    user_id: string;
-    category: string;
-    profile_url: string;
-    phone: string;
-    signUpAs: string;
-    followers: string;
-    socialMedia: string;
     email: string;
     password: string;
+    category: string;
+    phone: string;
+    signUpAs: string;
+    social_media_handles: social_media_handle[];
 }

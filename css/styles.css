@@ -5,15 +5,16 @@
 @import "components"; */
 /* BASIC */
 @import url("../../../node_modules/@angular/material/prebuilt-themes/indigo-pink.css");
+
 :root {
   --color-primary: #eb2f64;
   --color-primary-light: #FF3366;
   --color-primary-dark: #BA265D;
   --color-background-1: rgba(192, 100, 224, 0.76);
-  --color-background-2:rgba(18, 227, 255, 0.51);
+  --color-background-2: rgba(18, 227, 255, 0.51);
   /* --color-login-background-1: rgba(250, 66, 176, 0.67);
   --color-login-background-2:rgba(18, 84, 255, 0.57); */
-  --color-primary-1:#a963ffc9;
+  --color-primary-1: #a963ffc9;
   --color-grey-light-1: #faf9f9;
   --color-grey-light-2: #f4f2f2;
   --color-grey-light-3: #f0eeee;
@@ -21,8 +22,8 @@
   --color-grey-dark-1: rgb(75, 75, 75);
   --color-grey-dark-2: rgb(48, 48, 48);
   --color-grey-dark-3: #999;
-  --shadow-dark: 0 2rem 6rem rgba(0,0,0,.3);
-  --shadow-light: 0 2rem 5rem rgba(0,0,0,.06);
+  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, .3);
+  --shadow-light: 0 2rem 5rem rgba(0, 0, 0, .06);
   --line: 1px solid var(--color-grey-light-2);
 }
 
@@ -427,6 +428,7 @@ input:focus {
     /* transform: scale(1, 0); */
     opacity: 0;
   }
+
   to {
     /* transform: scale(1, 1); */
     opacity: 1;
@@ -523,7 +525,9 @@ h2.active {
 }
 
 /* FORM TYPOGRAPHY*/
-input[type=button], input[type=submit], input[type=reset] {
+input[type=button],
+input[type=submit],
+input[type=reset] {
   cursor: pointer;
   /* background-color: #56baed;
   border: none;
@@ -541,11 +545,15 @@ input[type=button], input[type=submit], input[type=reset] {
   transition: all 0.3s ease-in-out;
 }
 
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
+input[type=button]:hover,
+input[type=submit]:hover,
+input[type=reset]:hover {
   background-color: #39ace7;
 }
 
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
+input[type=button]:active,
+input[type=submit]:active,
+input[type=reset]:active {
   transform: scale(0.95);
 }
 
@@ -554,7 +562,8 @@ input[type=submit]:disabled {
   color: white;
 }
 
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
   /* background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;
@@ -570,7 +579,8 @@ input[type=text], input[type=password] {
   border-radius: 1rem;
 }
 
-input[type=text]:focus, input[type=password]:focus {
+input[type=text]:focus,
+input[type=password]:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }
@@ -579,13 +589,15 @@ input[type=text]:placeholder {
   color: #cccccc;
 }
 
-input[type=text].invalid-textbox, input[type=password].invalid-textbox {
+input[type=text].invalid-textbox,
+input[type=password].invalid-textbox {
   border-bottom: 2px solid #ed5558;
 }
 
 label.validation-message {
-  margin-top: -1rem;
+  /* margin-top: -1rem; */
   color: #ed5558;
+  font-size: 3px;
 }
 
 /* ANIMATIONS */
@@ -601,6 +613,7 @@ label.validation-message {
     opacity: 0;
     transform: translate3d(0, -100%, 0);
   }
+
   100% {
     opacity: 1;
     transform: none;
@@ -613,6 +626,7 @@ label.validation-message {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -794,7 +808,8 @@ td.text-right {
   text-align: right;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -803,7 +818,8 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 

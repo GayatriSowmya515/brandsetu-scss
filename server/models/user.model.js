@@ -2,6 +2,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// validation for profile url
+var profile_validation = function (val) {
+    profileRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    return profileRegex.test(val);
+}
+
+
 var userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -23,25 +30,42 @@ var userSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: 'Select any category'
+        required: 'Select atleast one category'
     },
-    user_id: {
-        type: String,
-        required: 'User Id can\'t be empty'
-    },
-    profile_url: {
-        type: String,
-        required: 'Profile URL can\'t be empty'
-    },
-    followers: {
-        type: String,
-    },
-    socialMedia: {
-        type: String,
-        required: true
+
+    social_media_handles: [{
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: "SocialMediaHandle"
+        socialMedia: {
+            type: String,
+            required: true
+        },
+        user_id: {
+            type: String,
+            required: 'User Id can\'t be empty'
+        },
+        profile_url: {
+            type: String,
+            required: 'Profile URL can\'t be empty',
+            validate: [profile_validation, 'Invalid profile URL.']
+        },
+        followers: {
+            type: Number,
+            required: 'Followers can\'t be empty'
+        },
+    }],
+
+    campaigns: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Campaign"
+    }],
+
+    price_per_post: {
+        type: Number,
     },
     saltSecret: String
 });
+
 
 // Custom validation for email
 userSchema.path('email').validate((val) => {
@@ -55,11 +79,6 @@ userSchema.path('phone').validate((val) => {
     return phoneRegex.test(val);
 }, 'Invalid phone number.');
 
-// Custom validation for profile url
-userSchema.path('profile_url').validate((val) => {
-    profileRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
-    return profileRegex.test(val);
-}, 'Invalid profile URL.');
 
 // Events 
 userSchema.pre('save', function (next) { // Hash password before saving to database
@@ -88,4 +107,4 @@ userSchema.methods.generateJwt = function () { // Generate Token
 
 
 
-mongoose.model('User', userSchema); 
+module.exports = mongoose.model('User', userSchema); 
