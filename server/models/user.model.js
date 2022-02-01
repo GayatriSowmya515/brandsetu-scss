@@ -63,6 +63,9 @@ var userSchema = new mongoose.Schema({
     price_per_post: {
         type: Number,
     },
+    reach: {
+        type: Number,
+    },
     saltSecret: String
 });
 

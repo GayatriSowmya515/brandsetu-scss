@@ -12,6 +12,7 @@
 |   |--● shared
 |   |  |--user.service.ts
 |   |  |--user.model.ts
+|   |  |--social_media_handles.model.ts
 |   |
 |   |--app.module.ts
 |   |--routes.ts

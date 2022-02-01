@@ -8,12 +8,38 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 // => localhost:3000/brand/
 router.get('/', (req, res) => {
-    console.log(Campaign);
+    console.log("Campaign");
     Campaign.find((err, docs) => {
         if (!err) { res.send(docs); }
         else { console.log('Error in Retriving Campaign :' + JSON.stringify(err, undefined, 2)); }
     });
 });
+
+//sorted influencers list for a campaign
+router.get('/influencers-list', (req, res) => {
+    console.log("Campaign influencers list");
+
+    if (!req.query.reach_min) {
+        req.query.reach_min = 0;
+    }
+    if (!req.query.reach_max) {
+        req.query.reach_max = 2147483647;
+    }
+    if (!req.query.price_min) {
+        req.query.price_min = 0;
+    }
+    if (!req.query.price_max) {
+        req.query.price_max = 2147483647;
+    }
+    User.find({ price_per_post: { $gte: req.query.price_min, $lte: req.query.price_max }, reach: { $gte: req.query.reach_min, $lte: req.query.reach_max } }, (err, docs) => {
+        if (!err) {
+            res.send(docs);
+        }
+        else { console.log('Error in Retriving User data :' + JSON.stringify(err, undefined, 2)); }
+    }).sort({ price_per_post: 1, reach: 1 });
+
+});
+
 
 router.get('/:id', (req, res) => {
     if (!ObjectId.isValid(req.params.id))
@@ -24,6 +50,7 @@ router.get('/:id', (req, res) => {
         else { console.log('Error in Retriving Campaign :' + JSON.stringify(err, undefined, 2)); }
     });
 });
+
 
 
 router.post('/:user_id/create-campaign', (req, res) => {
@@ -84,6 +111,9 @@ router.delete('/:user_id/:campaign_id/delete-campaign', (req, res) => {
         else { console.log('Error in Campaign Delete :' + JSON.stringify(err, undefined, 2)); }
     });
 });
+
+
+
 
 module.exports = router;
 
