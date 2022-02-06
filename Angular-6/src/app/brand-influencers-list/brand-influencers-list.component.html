@@ -1,0 +1,81 @@
+<div class="navbar">
+    <div class="navbar-space-1"></div>
+    <div class="navbar-container">
+        <a class="navbar-brand link" href="#">BrandSethu</a>
+        <div class="navbar-space">
+        </div>
+        <div class="navbar-login">
+            <a class="navbar-login-link link" href="#">Login</a>
+        </div>
+        <a href="#" class="navbar-logout link">Logout</a>
+        <button class="navbar-postCampaign login-btn">Post a Campaign</button>
+    </div>
+    <div class="navbar-space-2"></div>
+</div>
+<div class="box">
+    <div class="box-left"></div>
+    <div class="box-container">
+        <form #filterForm="ngForm" (ngSubmit)="onSubmit(filterForm)" class="left-box">
+            <div class="left-box-heading">
+                Filter
+            </div>
+            <div class="left-box-row-1">
+                <div class="left-box-row-1-head">Select Platforms</div>
+                <div class="left-box-row-1-desc">
+                    <select #socialMedia="ngModel" [(ngModel)]="filterForm.socialMedia" class="selectpicker"
+                        title="Select Platforms" required name="socialMedia">
+                        <option value="Youtube">Youtube</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Snapchart">Snapchart</option>
+                        <option value="Tiktok">Tiktok</option>
+                        <!-- <input type="text" class="left-box-row-1-desc-input"> -->
+                    </select>
+                </div>
+            </div>
+            <div class="left-box-row-2">
+                <div class="left-box-row-2-head">Price Range</div>
+                <div class="left-box-row-2-desc">
+                    <input #priceMin="ngModel" [(ngModel)]="filterForm.priceMin" name="priceMin" type="text"
+                        class="left-box-row-2-desc-input-1 input" placeholder="min">
+                    <div class="left-box-row-2-desc-btw"> - </div>
+                    <input #priceMax="ngModel" [(ngModel)]="filterForm.priceMax" name="priceMax" type="text"
+                        class="left-box-row-2-desc-input-2 input" placeholder="max">
+                </div>
+            </div>
+            <div class="left-box-row-3">
+                <div class="left-box-row-3-head">Reach</div>
+                <div class="left-box-row-3-desc">
+                    <input #reachMin="ngModel" [(ngModel)]="filterForm.reachMin" name="reachMin" type="text"
+                        class="left-box-row-3-desc-input-1 input" placeholder="min">
+                    <div class="left-box-row-3-desc-btw"> - </div>
+                    <input #reachMax="ngModel" [(ngModel)]="filterForm.reachMax" name="reachMax" type="text"
+                        class="left-box-row-3-desc-input-2 input" placeholder="max">
+                </div>
+            </div>
+            <div class="left-box-row-btn">
+                <button (click)="onSubmit(filterForm)" class="left-box-row-btn-btn login-btn">Sort</button>
+            </div>
+        </form>
+        <div class="right-box">
+            <div class="right-box-heading">
+                Select Influencers
+            </div>
+            <div class="right-box-list">
+                <div class="right-box-list-item" *ngFor="let l of list">
+                    <div class="right-box-list-item-email">{{l.email}}</div>
+                    <div class="right-box-list-item-description">{{l.description}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-right"></div>
+</div>
+<!-- <div class="list">
+    <div class="list-head">Select Influencers</div>
+    <ul>
+        <li *ngFor="let l of list">
+            <div class="list-">{{l.email}}</div>
+            <div class="">{{l.description}}</div>{{ l }}
+        </li>
+    </ul>
+</div> -->

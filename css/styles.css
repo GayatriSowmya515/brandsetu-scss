@@ -690,18 +690,19 @@ label.validation-message {
 
 .alert {
   padding: 20px;
-  background-color: #f44336;
+  background-color: #fc6257;
   /* Red */
   color: white;
-  margin-bottom: 15px;
+  position: absolute;
 }
 
 .success {
   padding: 20px;
-  background-color: #249424;
+  background-color: #61e961;
   /* Green */
   color: white;
   margin-bottom: 15px;
+  position: absolute;
 }
 
 /* Table Styles */

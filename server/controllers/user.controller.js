@@ -61,7 +61,20 @@ module.exports.userProfile = (req, res, next) => {
             if (!user)
                 return res.status(404).json({ status: false, message: 'User record not found.' });
             else
-                return res.status(200).json({ status: true, user: _.pick(user, ['user_id', 'email', 'socialMedia', 'profile_url']) });
+                return res.status(200).json({ status: true, user: user });// _.pick(user, ['_id', 'signUpAs', 'email', 'socialMedia']) });
+        }
+    );
+}
+
+module.exports.getUserId = (req, res, next) => {
+    User.findOne({ _id: req._id }, // find user by id
+        (err, user) => {
+            if (!user)
+                return res.status(404).json({ status: false, message: 'User record not found.' });
+            else {
+                console.log(user.user_id);
+                return res.status(200).json({ status: true, user_id: user.user_id });
+            }
         }
     );
 }

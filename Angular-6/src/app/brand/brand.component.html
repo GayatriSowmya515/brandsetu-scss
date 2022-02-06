@@ -1,0 +1,54 @@
+<form #campaignForm="ngForm" (ngSubmit)="campaignForm.valid && onSubmit(campaignForm)"
+    class="post-campaign-container container">
+    <h1 class="post-campaign-head">Tell us about your Campaign</h1>
+    <div class="post-campaign-box">
+        <div class="post-campaign-box-1">
+            <h3 class="post-campaign-box-1-head campaign-head">Product Category</h3>
+            <input autocomplete="off" class="input campaign-input" type="text" placeholder="Enter Product Category"
+                #productCategory="ngModel" [(ngModel)]="campaignService.selectedCampaign.productCategory"
+                name="productCategory" required [ngClass]="{'invalid-textbox' : !productCategory.valid }" />
+            <div class="validation-box" *ngIf="productCategory.errors">
+                <label *ngIf="productCategory.errors.required" class="validation-message">This field is
+                    required.</label>
+            </div>
+        </div>
+        <div class="post-campaign-box-2">
+            <h3 class="post-campaign-box-2-head campaign-head">Campaign size</h3>
+            <input autocomplete="off" class="input campaign-input" type="text" placeholder="Enter Campaign size"
+                #campaignSize="ngModel" [(ngModel)]="campaignService.selectedCampaign.campaignSize" name="campaignSize"
+                required [ngClass]="{'invalid-textbox' : !campaignSize.valid }" />
+            <div class="validation-box" *ngIf="campaignSize.errors">
+                <label *ngIf="campaignSize.errors.required" class="validation-message">This field is required.</label>
+            </div>
+        </div>
+        <div class="post-campaign-box-3">
+            <h3 class="post-campaign-box-3-head campaign-head">Social Media Platforms</h3>
+            <select #socialMedia="ngModel" [(ngModel)]="campaignService.selectedCampaign.socialMedia"
+                class="selectpicker input campaign-input" multiple title="Select One or more Social Media Platforms"
+                placeholder="Social Media" required name="socialMedia"
+                [ngClass]="{'invalid-textbox' :!socialMedia.valid }">
+                <option value="Youtube">Youtube</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Snapchart">Snapchart</option>
+                <option value="Tiktok">Tiktok</option>
+            </select>
+            <div class="validation-box" *ngIf="socialMedia.errors">
+                <label *ngIf="socialMedia.errors.required" class="validation-message">This field is
+                    required.</label>
+            </div>
+        </div>
+        <div class="post-campaign-box-4">
+            <h3 class="post-campaign-box-4-head campaign-head">Describe Your Campaign</h3>
+            <textarea autocomplete="off" class="input campaign-input" type="text"
+                placeholder="Describe Your Campaign here" rows="40" #description="ngModel"
+                [(ngModel)]="campaignService.selectedCampaign.description" name="description" required
+                [ngClass]="{'invalid-textbox' : !description.valid }"></textarea>
+            <div class="validation-box" *ngIf="description.errors">
+                <label *ngIf="description.errors.required" class="validation-message">This field is required.</label>
+            </div>
+        </div>
+        <button type="button" anim="ripple" (click)="onSubmit(campaignForm)"
+            class="login-btn signup-btn btn-next">Post</button>
+
+    </div>
+</form>

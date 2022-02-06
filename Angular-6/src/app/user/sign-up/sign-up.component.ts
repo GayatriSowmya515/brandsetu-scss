@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm, NgModel, NgModelGroup } from '@angular/forms';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { Router } from "@angular/router";
 import { UserService } from '../../shared/user.service'
 
 @Component({
@@ -20,8 +20,10 @@ export class SignUpComponent implements OnInit {
     'Brand'
   ];
   Apps = [
-    'Facebook',
-    'Instagram'
+    'Instagram',
+    'Tiktok',
+    'Snapchat',
+    'Youtube',
   ];
 
   formAccountNumber = -1;
@@ -32,7 +34,7 @@ export class SignUpComponent implements OnInit {
   serverErrorMessages: string;
 
 
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService, public router: Router) {
 
   }
 
@@ -56,6 +58,8 @@ export class SignUpComponent implements OnInit {
       res => {
         this.showSucessMessage = true;
         setTimeout(() => this.showSucessMessage = false, 4000);
+        if (this.userService.isLoggedIn())
+          this.router.navigateByUrl('/brand/create-campaign');
         this.resetForm(form);
       },
       err => {
@@ -66,9 +70,18 @@ export class SignUpComponent implements OnInit {
           this.serverErrorMessages = 'Something went wrong.Please contact admin.';
       }
     );
+
   }
 
   resetForm(form: NgForm) {
+    this.userService.login(form.value).subscribe(
+      res => {
+        this.userService.setToken(res['token']);
+        this.router.navigateByUrl('/brand/create-campaign');
+      },
+      err => {
+        this.serverErrorMessages = err.error.message;
+      });
     this.userService.selectedUser = {
       category: '',
       phone: '',
@@ -105,7 +118,6 @@ export class SignUpComponent implements OnInit {
     }
     else if (num == 2) {
       if (form.name.category != '') {
-        console.log("yayyyy");
         this.formStepsNum = num;
         this.formNumError = -1;
       }

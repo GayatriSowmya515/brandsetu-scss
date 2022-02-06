@@ -19,6 +19,8 @@ import { UserService } from './shared/user.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrandComponent } from './brand/brand.component';
+import { BrandInfluencersListComponent } from './brand-influencers-list/brand-influencers-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     UserComponent,
     SignUpComponent,
     UserProfileComponent,
-    SignInComponent
+    SignInComponent,
+    BrandComponent,
+    BrandInfluencersListComponent
   ],
   imports: [
     BrowserModule,

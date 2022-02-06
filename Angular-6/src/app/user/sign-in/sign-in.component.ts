@@ -26,7 +26,7 @@ export class SignInComponent implements OnInit {
   serverErrorMessages: string;
   ngOnInit() {
     if (this.userService.isLoggedIn())
-      this.router.navigateByUrl('/userprofile');
+      this.router.navigateByUrl('/brand/create-campaign');
     ripple();
   }
 
@@ -34,7 +34,7 @@ export class SignInComponent implements OnInit {
     this.userService.login(form.value).subscribe(
       res => {
         this.userService.setToken(res['token']);
-        this.router.navigateByUrl('/userprofile');
+        this.router.navigateByUrl('/brand/create-campaign');
       },
       err => {
         this.serverErrorMessages = err.error.message;

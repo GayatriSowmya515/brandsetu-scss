@@ -4,6 +4,7 @@ var Campaign = require("../models/campaign.model.js"); // import Brand model fro
 var User = require("../models/user.model.js"); // import User model from models/user.model.js
 var middleware = require("../middleware");
 var ObjectId = require('mongoose').Types.ObjectId;
+const ctrlUser = require('../controllers/user.controller');
 
 
 // => localhost:3000/brand/
@@ -31,16 +32,32 @@ router.get('/influencers-list', (req, res) => {
     if (!req.query.price_max) {
         req.query.price_max = 2147483647;
     }
-    User.find({ price_per_post: { $gte: req.query.price_min, $lte: req.query.price_max }, reach: { $gte: req.query.reach_min, $lte: req.query.reach_max } }, (err, docs) => {
-        if (!err) {
-            res.send(docs);
-        }
-        else { console.log('Error in Retriving User data :' + JSON.stringify(err, undefined, 2)); }
-    }).sort({ price_per_post: 1, reach: 1 });
+    if (!req.query.social_media) {
+        User.find({ price_per_post: { $gte: req.query.price_min, $lte: req.query.price_max }, reach: { $gte: req.query.reach_min, $lte: req.query.reach_max }, signUpAs: "Influencer" }, (err, docs) => {
+            if (!err) {
+                //console.log(docs);
+                res.status(200).json({ status: true, influencers: docs });
+                //res.send(JSON.stringify(docs));
+            }
+            else { console.log('Error in Retriving User data :' + JSON.stringify(err, undefined, 2)); }
+        }).sort({ price_per_post: 1, reach: 1 });
+    }
+    else {
+        User.find({ price_per_post: { $gte: req.query.price_min, $lte: req.query.price_max }, reach: { $gte: req.query.reach_min, $lte: req.query.reach_max }, signUpAs: "Influencer", social_media_handles: { $elemMatch: { socialMedia: req.query.social_media } } }, (err, docs) => {
+            if (!err) {
+                //console.log(docs);
+                res.status(200).json({ status: true, influencers: docs });
+                //res.send(JSON.stringify(docs));
+            }
+            else { console.log('Error in Retriving User data :' + JSON.stringify(err, undefined, 2)); }
+        }).sort({ price_per_post: 1, reach: 1 });
+    }
+    console.log(req.query.social_media);
+
 
 });
 
-
+// show the campaign data
 router.get('/:id', (req, res) => {
     if (!ObjectId.isValid(req.params.id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
@@ -52,8 +69,10 @@ router.get('/:id', (req, res) => {
 });
 
 
-
+// post the campaign
 router.post('/:user_id/create-campaign', (req, res) => {
+    console.log(ctrlUser.getUserId);
+    console.log("req.body: " + JSON.stringify(req.body));
     User.findById(req.params.user_id, (err, user) => {
         if (err) {
             console.log(err);
@@ -79,6 +98,7 @@ router.post('/:user_id/create-campaign', (req, res) => {
 
 });
 
+// edit the campaign
 router.put('/:user_id/:campaign_id/edit-campaign', (req, res) => {
     if (!ObjectId.isValid(req.params.campaign_id))
         return res.status(400).send(`No record with given id : ${req.params.id}`);
@@ -95,6 +115,7 @@ router.put('/:user_id/:campaign_id/edit-campaign', (req, res) => {
     });
 });
 
+// delete the campaign
 router.delete('/:user_id/:campaign_id/delete-campaign', (req, res) => {
     if (!ObjectId.isValid(req.params.campaign_id))
         return res.status(400).send(`No record with given id : ${req.params.campaign_id}`);

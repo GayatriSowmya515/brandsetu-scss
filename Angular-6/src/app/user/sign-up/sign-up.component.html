@@ -64,7 +64,7 @@
         </div>
         <div class="signup-box-1-d-dropdown">
           <select #signUpAs="ngModel" [(ngModel)]="userService.selectedUser.signUpAs" class="selectpicker" id="drop-1"
-            placeholder="Sign up as" name="signUpAs" required
+            title="Sign up as" name="signUpAs" required
             [ngClass]="{'invalid-textbox' :formNumError==0 && !signUpAs.valid }">
             <option value="Influencer">Influencer</option>
             <option value="Brand">Brand</option>
@@ -89,7 +89,7 @@
       <div class="signup-box-2-d">
         <div class="signup-box-2-d-input">
           <select #category="ngModel" [(ngModel)]="userService.selectedUser.category" class="selectpicker"
-            placeholder="Category" name="category" required
+            title="Select a Category" name="category" required
             [ngClass]="{'invalid-textbox' :formNumError==1 && !category.valid }">
             <option value="Entertainment">Entertainment</option>
             <option value="Education">Education</option>
@@ -150,14 +150,15 @@
 
         </div>
         <div class="signup-box-3-d-dropdown">
-          <select #socialMedia="ngModel" [(ngModel)]="social_media_handle.socialMedia" class="input" id="drop-1"
-            placeholder="Social Media" required name="socialMedia"
+          <select #socialMedia="ngModel" [(ngModel)]="social_media_handle.socialMedia" class="selectpicker"
+            title="Select a Social Media Platform" id="drop-1" required name="socialMedia"
             [ngClass]="{'invalid-textbox' :formNumError == 2 && !socialMedia.valid }">
             <option value="Youtube">Youtube</option>
             <option value="Instagram">Instagram</option>
             <option value="Snapchart">Snapchart</option>
             <option value="Tiktok">Tiktok</option>
           </select>
+
           <div class="validation-box" *ngIf="formNumError == 2 && socialMedia.errors">
             <label *ngIf="socialMedia.errors.required" class="validation-message">This field is required.</label>
           </div>

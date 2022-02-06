@@ -9,10 +9,9 @@ var campaignSchema = new mongoose.Schema({
         type: String,
         required: 'Can\'t be empty'
     },
-    socialMedia: {
+    socialMedia: [{
         type: String,
-        required: true
-    },
+    }],
     description: {
         type: String,
         required: 'Can\'t be empty'
